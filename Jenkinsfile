@@ -18,7 +18,7 @@ pipeline {
                 sh 'ls -l $DOCKER_CONFIG/contexts/meta || true'
             }
         }
-        
+
         stage('Build') {
             steps {
                 checkout scmGit(
@@ -43,15 +43,14 @@ pipeline {
         // Uploading Docker images into Docker Hub
         stage('Upload image') {
             steps {
-                script {
-                    // sign in Docker Hub
-                    docker.withRegistry('https://dockerpull.cn', 'dockerhub_credential') {
-                    // push image
-                    docker.image("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}").push() 
-                    // :optional: label latest
-                    docker.image("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}").push('latest')
-                    }
-                }
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_credential', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                sh '''
+                    echo $DOCKER_PASS | docker login https://dockerpull.cn -u $DOCKER_USER --password-stdin
+                    docker push ${DOCKER_IMAGE}:${DOCKER_TAG}
+                    docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:latest
+                    docker push ${DOCKER_IMAGE}:latest
+                '''
+            }
             }
         }
 
