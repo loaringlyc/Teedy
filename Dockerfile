@@ -12,6 +12,7 @@ ENV JAVA_OPTIONS -Dfile.encoding=UTF-8 -Xmx1g
 ENV JETTY_VERSION 11.0.20
 ENV JETTY_HOME /opt/jetty
 
+RUN sed -i 's|http://.*.ubuntu.com|http://mirrors.aliyun.com|g' /etc/apt/sources.list
 # Install packages
 RUN apt-get update && \
     apt-get -y -q --no-install-recommends install \
