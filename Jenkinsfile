@@ -4,7 +4,6 @@ pipeline {
     environment {
         // define environment variable
         // Jenkins credentials configuration
-        DOCKER_CONFIG = '/Users/linyicheng/.docker'
         DOCKER_HUB_CREDENTIALS = credentials('dockerhub_credential') // Docker Hub credentials ID store in Jenkins
         // Docker Hub Repository's name
         DOCKER_IMAGE = 'loringlyc/teedy' // your Docker Hub user name and Repository's name
@@ -12,6 +11,14 @@ pipeline {
     }
 
     stages {
+        stage('Debug Env') {
+            steps {
+                sh 'env'
+                sh 'ls -l /var/run/docker.sock'
+                sh 'ls -l $DOCKER_CONFIG/contexts/meta || true'
+            }
+        }
+        
         stage('Build') {
             steps {
                 checkout scmGit(
