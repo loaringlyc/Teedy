@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('docs').controller('Ai', function($scope, $http) {
+angular.module('docs').controller('Ai', function($scope, Restangular) {
   $scope.messages = [];
   $scope.input = '';
 
@@ -9,25 +9,19 @@ angular.module('docs').controller('Ai', function($scope, $http) {
     var userMsg = { from: 'user', text: $scope.input };
     $scope.messages.push(userMsg);
 
-    // 直接用 $http 向 DeepSeek API 发送请求
-    $http({
-      method: 'POST',
-      url: 'https://api.deepseek.com/chat/completions',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer xxx'
-      },
-      data: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          { role: 'system', content: 'You are a helpful assistant.' },
-          { role: 'user', content: $scope.input }
-        ],
-        stream: false
-      }),
-      transformRequest: []
-    }).then(function(response) {
-      var aiReply = response.data.choices[0].message.content;
+    // 调用 DeepSeek API
+    Restangular.all('ai/chat').post(JSON.stringify({
+      model: 'deepseek-chat',
+      messages: [
+        { role: 'system', content: 'You are a helpful assistant.' },
+        { role: 'user', content: $scope.input }
+      ],
+      stream: false
+    }),
+    null,
+    { 'Content-Type': 'application/json' },
+    ).then(function(response) {
+      var aiReply = response.choices[0].message.content;
       $scope.messages.push({ from: 'ai', text: aiReply });
     }, function() {
       $scope.messages.push({ from: 'ai', text: 'AI接口请求失败，请重试' });
