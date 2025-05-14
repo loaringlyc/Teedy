@@ -417,6 +417,15 @@ angular.module('docs',
           controller: 'GroupProfile'
         }
       }
+    })
+    .state('ai', {
+      url: '/ai',
+      views: {
+        'page': {
+          templateUrl: 'partial/docs/ai.html',
+          controller: 'Ai'
+        }
+      }
     });
 
   // Configuring Restangular

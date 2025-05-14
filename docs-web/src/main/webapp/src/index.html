@@ -99,6 +99,7 @@
     <script src="app/docs/controller/usergroup/UserGroup.js" type="text/javascript"></script>
     <script src="app/docs/controller/usergroup/UserProfile.js" type="text/javascript"></script>
     <script src="app/docs/controller/usergroup/GroupProfile.js" type="text/javascript"></script>
+    <script src="app/docs/controller/ai/Ai.js" type="text/javascript"></script>
     <script src="app/docs/service/User.js" type="text/javascript"></script>
     <script src="app/docs/filter/Filesize.js" type="text/javascript"></script>
     <script src="app/docs/directive/SelectTag.js" type="text/javascript"></script>
@@ -145,7 +146,7 @@
           <li ui-sref-active="{ active: 'user.**', active2: 'group.**' }">
             <a href="#/user"><span class="fas fa-user"></span> {{ 'index.nav_users_groups' | translate }}</a>
           </li>
-          <li ui-sref-active="">
+          <li ui-sref-active="{ active: 'ai' }">
             <a href="#/ai"><span class="fas fa-robot"></span> {{ 'index.nav_ai' | translate }}</a>
           </li>
         </ul>
