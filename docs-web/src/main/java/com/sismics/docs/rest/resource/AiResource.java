@@ -34,8 +34,8 @@ public class AiResource {
                 os.write(requestBody.getBytes("UTF-8"));
             }
 
-            // int statusCode = conn.getResponseCode();
-            // System.out.println("响应码: " + statusCode);
+            int statusCode = conn.getResponseCode();
+            System.out.println("响应码: " + statusCode);
 
             BufferedReader br;
             if (statusCode >= 200 && statusCode < 300) {
