@@ -13,6 +13,7 @@ create cached table T_DOCUMENT_TAG ( DOT_ID_C varchar(36) not null, DOT_IDDOCUME
 create cached table T_ACL ( ACL_ID_C varchar(36) not null, ACL_PERM_C varchar(30) not null, ACL_SOURCEID_C varchar(36) not null, ACL_TARGETID_C varchar(36) not null, ACL_DELETEDATE_D datetime, primary key (ACL_ID_C) );
 create cached table T_SHARE ( SHA_ID_C varchar(36) not null, SHA_NAME_C varchar(36), SHA_CREATEDATE_D datetime, SHA_DELETEDATE_D datetime, primary key (SHA_ID_C) );
 create cached table T_AUDIT_LOG ( LOG_ID_C varchar(36) not null, LOG_IDENTITY_C varchar(36) not null, LOG_CLASSENTITY_C varchar(50) not null, LOG_TYPE_C varchar(50) not null, LOG_MESSAGE_C varchar(1000), LOG_CREATEDATE_D datetime, primary key (LOG_ID_C) );
+create memory table T_MESSAGE ( MSG_ID_C varchar(36) not null, MSG_FROM_C varchar(36) not null, MSG_TO_C varchar(36) not null, MSG_USERNAME_C varchar(50) not null, MSG_PASSWORD_C varchar(60) not null, MSG_CREATEDATE_D datetime not null, primary key (MSG_ID_C) );
 
 alter table T_AUTHENTICATION_TOKEN add constraint FK_AUT_IDUSER_C foreign key (AUT_IDUSER_C) references T_USER (USE_ID_C) on delete restrict on update restrict;
 alter table T_DOCUMENT add constraint FK_DOC_IDUSER_C foreign key (DOC_IDUSER_C) references T_USER (USE_ID_C) on delete restrict on update restrict;
@@ -25,6 +26,8 @@ alter table T_DOCUMENT_TAG add constraint FK_DOT_IDDOCUMENT_C foreign key (DOT_I
 alter table T_DOCUMENT_TAG add constraint FK_DOT_IDTAG_C foreign key (DOT_IDTAG_C) references T_TAG (TAG_ID_C) on delete restrict on update restrict;
 alter table T_ROLE_BASE_FUNCTION add constraint FK_RBF_IDROLE_C foreign key (RBF_IDROLE_C) references T_ROLE (ROL_ID_C) on delete restrict on update restrict;
 alter table T_ROLE_BASE_FUNCTION add constraint FK_RBF_IDBASEFUNCTION_C foreign key (RBF_IDBASEFUNCTION_C) references T_BASE_FUNCTION (BAF_ID_C) on delete restrict on update restrict;
+alter table T_USER_MESSAGE add constraint FK_MSG_FROM_C foreign key (MSG_FROM_C) references T_USER (USE_ID_C) on delete restrict on update restrict;
+alter table T_USER_MESSAGE add constraint FK_MSG_TO_C foreign key (MSG_TO_C) references T_USER (USE_ID_C) on delete restrict on update restrict;
 
 create index IDX_DOC_TITLE_C on T_DOCUMENT (DOC_TITLE_C);
 create index IDX_DOC_CREATEDATE_D on T_DOCUMENT (DOC_CREATEDATE_D);
