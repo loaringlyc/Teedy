@@ -29,4 +29,30 @@
   <div class="col-md-8">
     <div ui-view="user"></div>
   </div>
+
+  <div class="col" style="margin-top:40px;">
+  <div class="col-md-12">
+    <h3>注册申请信息</h3>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>用户名</th>
+          <th>邮箱</th>
+          <th>创建时间</th>
+          <th>是否已审核</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="msg in messages">
+          <td>{{ msg.username }}</td>
+          <td>{{ msg.email }}</td>
+          <td>{{ msg.createDate | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+          <td>
+            <span ng-if="msg.accepted">已审核</span>
+            <span ng-if="!msg.accepted">未审核</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

@@ -6,6 +6,8 @@ import com.sismics.util.JsonUtil;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -44,6 +46,34 @@ public class SignupResource {
             e.printStackTrace();
             return Response.status(500)
                     .entity(Json.createObjectBuilder().add("error", "注册信息存储失败").build())
+                    .build();
+        }
+    }
+
+    @GET
+    @Path("list")
+    public Response get() {
+        try {
+            MessageDao messageDao = new MessageDao();
+            java.util.List<Message> messages = messageDao.findAll();
+            
+            // 构建 JSON 数组
+            jakarta.json.JsonArrayBuilder arrayBuilder = jakarta.json.Json.createArrayBuilder();
+            for (Message msg : messages) {
+                arrayBuilder.add(
+                        jakarta.json.Json.createObjectBuilder()
+                                .add("id", msg.getId())
+                                .add("username", msg.getUsername())
+                                .add("email", msg.getEmail())
+                                .add("createDate", msg.getCreateDate() != null ? msg.getCreateDate().getTime() : 0)
+                                .add("accepted", msg.isAccepted()));
+            }
+            
+            return Response.ok(arrayBuilder.build()).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500)
+                    .entity(jakarta.json.Json.createObjectBuilder().add("error", "获取注册申请列表失败").build())
                     .build();
         }
     }

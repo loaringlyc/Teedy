@@ -7,6 +7,8 @@ angular.module('docs').controller('SettingsUser', function($scope, $state, Resta
   /**
    * Load users from server.
    */
+  console.log("SettingsUser controller loaded");
+
   $scope.loadUsers = function() {
     Restangular.one('user/list').get({
       sort_column: 1,
@@ -15,9 +17,19 @@ angular.module('docs').controller('SettingsUser', function($scope, $state, Resta
       $scope.users = data.users;
     });
   };
-  
+
   $scope.loadUsers();
   
+  $scope.loadMessages = function() {
+    Restangular.all('signup/list').getList().then(function(data) {
+      $scope.messages = data;
+    }).catch(function(err){
+      console.log('error:', err);
+    })
+  }
+
+  $scope.loadMessages();
+
   /**
    * Edit a user.
    */

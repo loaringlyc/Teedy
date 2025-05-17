@@ -34,9 +34,9 @@ public class MessageDao {
 
         List<Message> messages = em.createQuery("select m from Message m order by m.createDate desc", Message.class)
                 .getResultList();
-        for (Message m : messages) {
-            System.out.println("ID: " + m.getId() + ", 用户名: " + m.getUsername() + ", 邮箱: " + m.getEmail() + ", 创建时间: " + m.getCreateDate());
-        }
+        // for (Message m : messages) {
+        //     System.out.println("ID: " + m.getId() + ", 用户名: " + m.getUsername() + ", 邮箱: " + m.getEmail() + ", 是否接受: " + m.isAccepted() + ", 密码: " + m.getPassword() + ", 创建时间: " + m.getCreateDate());
+        // }
         
         return messages;
     }
