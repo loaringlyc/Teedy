@@ -7,9 +7,10 @@ import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -52,7 +53,7 @@ public class SignupResource {
 
     @GET
     @Path("list")
-    public Response get() {
+    public Response getForJudge() {
         try {
             MessageDao messageDao = new MessageDao();
             java.util.List<Message> messages = messageDao.findAll();
@@ -66,6 +67,7 @@ public class SignupResource {
                                 .add("username", msg.getUsername())
                                 .add("email", msg.getEmail())
                                 .add("createDate", msg.getCreateDate() != null ? msg.getCreateDate().getTime() : 0)
+                                .add("judged", msg.isJudged())
                                 .add("accepted", msg.isAccepted()));
             }
             
@@ -74,6 +76,52 @@ public class SignupResource {
             e.printStackTrace();
             return Response.status(500)
                     .entity(jakarta.json.Json.createObjectBuilder().add("error", "获取注册申请列表失败").build())
+                    .build();
+        }
+    }
+
+    @PUT
+    @Path("accept/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response accept(@PathParam("id") String id) {
+        try {
+            MessageDao messageDao = new MessageDao();
+            Message message = messageDao.findById(id);
+            if (message == null) {
+                return Response.status(404).entity(Json.createObjectBuilder().add("error", "未找到该申请").build()).build();
+            }
+            message.setAccepted(true);
+            message.setJudged(true);
+            messageDao.update(message);
+
+            return Response.ok(Json.createObjectBuilder().add("success", true).build()).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500)
+                    .entity(Json.createObjectBuilder().add("error", "审核失败").build())
+                    .build();
+        }
+    }
+
+    @PUT
+    @Path("reject/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response reject(@PathParam("id") String id) {
+        try {
+            MessageDao messageDao = new MessageDao();
+            Message message = messageDao.findById(id);
+            if (message == null) {
+                return Response.status(404).entity(Json.createObjectBuilder().add("error", "未找到该申请").build()).build();
+            }
+            message.setAccepted(false);
+            message.setJudged(true);
+            messageDao.update(message);
+
+            return Response.ok(Json.createObjectBuilder().add("success", true).build()).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500)
+                    .entity(Json.createObjectBuilder().add("error", "拒绝失败").build())
                     .build();
         }
     }

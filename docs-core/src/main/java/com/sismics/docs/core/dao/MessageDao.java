@@ -32,14 +32,26 @@ public class MessageDao {
     public List<Message> findAll() {
         EntityManager em = ThreadLocalContext.get().getEntityManager();
 
-        List<Message> messages = em.createQuery("select m from Message m order by m.createDate desc", Message.class)
+        List<Message> messages = em.createQuery("select m from Message m order by m.judged asc, m.createDate desc", Message.class)
                 .getResultList();
         // for (Message m : messages) {
-        //     System.out.println("ID: " + m.getId() + ", 用户名: " + m.getUsername() + ", 邮箱: " + m.getEmail() + ", 是否接受: " + m.isAccepted() + ", 密码: " + m.getPassword() + ", 创建时间: " + m.getCreateDate());
+        //     System.out.println("ID: " + m.getId() + ", 用户名: " + m.getUsername() + ", 邮箱: " + m.getEmail() + ", 是否审核: " + m.isJudged() + ", 是否接受: " + m.isAccepted() + ", 密码: " + m.getPassword() + ", 创建时间: " + m.getCreateDate());
         // }
         
         return messages;
     }
 
+    public Message findById(String id) {
+        EntityManager em = ThreadLocalContext.get().getEntityManager();
+        return em.find(Message.class, id);
+    }
 
+    /**
+     * 更新消息
+     * @param message 要更新的消息对象
+     */
+    public void update(Message message) {
+        EntityManager em = ThreadLocalContext.get().getEntityManager();
+        em.merge(message);
+    }
 }

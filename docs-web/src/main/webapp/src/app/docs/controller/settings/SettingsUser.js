@@ -7,7 +7,6 @@ angular.module('docs').controller('SettingsUser', function($scope, $state, Resta
   /**
    * Load users from server.
    */
-  console.log("SettingsUser controller loaded");
 
   $scope.loadUsers = function() {
     Restangular.one('user/list').get({
@@ -35,5 +34,17 @@ angular.module('docs').controller('SettingsUser', function($scope, $state, Resta
    */
   $scope.editUser = function(user) {
     $state.go('settings.user.edit', { username: user.username });
+  };
+
+  $scope.acceptMessage = function(msg) {
+    Restangular.one('signup/accept', msg.id).customPUT().then(function() {
+      $scope.loadMessages();
+    });
+  };
+
+  $scope.rejectMessage = function(msg) {
+    Restangular.one('signup/reject', msg.id).customPUT().then(function() {
+      $scope.loadMessages();
+    });
   };
 });

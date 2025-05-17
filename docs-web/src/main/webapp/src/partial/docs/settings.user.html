@@ -40,6 +40,7 @@
           <th>邮箱</th>
           <th>创建时间</th>
           <th>是否已审核</th>
+          <th>是否通过</th>
         </tr>
       </thead>
       <tbody>
@@ -48,8 +49,16 @@
           <td>{{ msg.email }}</td>
           <td>{{ msg.createDate | date:'yyyy-MM-dd HH:mm:ss' }}</td>
           <td>
-            <span ng-if="msg.accepted">已审核</span>
-            <span ng-if="!msg.accepted">未审核</span>
+            <span ng-if="msg.judged">已审核</span>
+            <span ng-if="!msg.judged">未审核</span>
+          </td>
+          <td>
+            <span ng-if="msg.accepted">已通过</span>
+            <span ng-if="!msg.accepted">未通过</span>
+          </td>
+          <td>
+            <button class="btn btn-success btn-xs" ng-click="acceptMessage(msg)" ng-disabled="msg.judged">同意</button>
+            <button class="btn btn-danger btn-xs" ng-click="rejectMessage(msg)" ng-disabled="msg.judged">拒绝</button>
           </td>
         </tr>
       </tbody>

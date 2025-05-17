@@ -29,6 +29,9 @@ public class Message {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
 
+    @Column(name = "MSG_JUDGED_B", nullable = false)
+    private boolean judged = false;
+    
     @Column(name = "MSG_ACCEPTED_B", nullable = false)
     private boolean accepted = false;
 
@@ -47,6 +50,9 @@ public class Message {
 
     public Date getCreateDate() { return createDate; }
     public void setCreateDate(Date createDate) { this.createDate = createDate; }
+
+    public boolean isJudged() { return judged; }
+    public void setJudged(boolean judged) { this.judged = judged; }
 
     public boolean isAccepted() { return accepted; }
     public void setAccepted(boolean accepted) { this.accepted = accepted; }
