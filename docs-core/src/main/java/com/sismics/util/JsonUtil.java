@@ -1,6 +1,10 @@
 package com.sismics.util;
 
+import java.io.StringReader;
+
 import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 import jakarta.json.JsonValue;
 
 /**
@@ -46,5 +50,11 @@ public class JsonUtil {
             return JsonValue.NULL;
         }
         return Json.createObjectBuilder().add("_", value).build().get("_");
+    }
+
+    public static JsonObject readJsonObject(String requestBody) {
+        try (JsonReader reader = Json.createReader(new StringReader(requestBody))) {
+            return reader.readObject();
+        }
     }
 }

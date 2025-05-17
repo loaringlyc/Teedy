@@ -26,7 +26,8 @@ public class AiResource {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
 
-            String apiKey = System.getenv("DEEPSEEK_API_KEY");
+            // String apiKey = System.getenv("DEEPSEEK_API_KEY");
+            String apiKey = "sk-8c37843d87244de28a571c5a7600160b";
             conn.setRequestProperty("Authorization", "Bearer " + apiKey);
             conn.setDoOutput(true);
 
