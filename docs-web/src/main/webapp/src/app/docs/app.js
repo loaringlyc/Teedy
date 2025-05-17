@@ -426,6 +426,15 @@ angular.module('docs',
           controller: 'Ai'
         }
       }
+    })
+    .state('signup', {
+      url: '/signup',
+      views: {
+        'page@': {
+          templateUrl: 'partial/docs/signup.html',
+          controller: 'Signup'
+        }
+      }
     });
 
   // Configuring Restangular
