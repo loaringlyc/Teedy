@@ -1,7 +1,10 @@
 package com.sismics.docs.rest.resource;
 
+import com.sismics.docs.core.constant.Constants;
 import com.sismics.docs.core.dao.MessageDao;
+import com.sismics.docs.core.dao.UserDao;
 import com.sismics.docs.core.model.jpa.Message;
+import com.sismics.docs.core.model.jpa.User;
 import com.sismics.util.JsonUtil;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -93,6 +96,16 @@ public class SignupResource {
             message.setAccepted(true);
             message.setJudged(true);
             messageDao.update(message);
+
+            UserDao userDao = new UserDao();
+            User user = new User();
+            user.setRoleId(Constants.DEFAULT_USER_ROLE);
+            user.setUsername(message.getUsername());
+            user.setEmail(message.getEmail());
+            user.setPassword(message.getPassword()); // 未加密
+            user.setStorageQuota(100000L); //默认值
+            user.setCreateDate(new java.util.Date());
+            userDao.create(user, message.getId()); //随机的值
 
             return Response.ok(Json.createObjectBuilder().add("success", true).build()).build();
         } catch (Exception e) {
