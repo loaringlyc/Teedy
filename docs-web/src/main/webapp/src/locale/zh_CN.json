@@ -36,6 +36,7 @@
     "error_info": "{{ count }} 新错误",
     "logged_as": "以 {{ username }}登录",
     "nav_settings": "设置",
+    "nav_sign_up": "注册",
     "logout": "退出",
     "global_quota_warning": "<strong>提醒!</strong> 全球配额存储空间已经使用 {{ current | number: 0 }}MB 占总存储配额 {{ total | number: 0 }}MB 的 ({{ percent | number: 1 }}%)"
   },
