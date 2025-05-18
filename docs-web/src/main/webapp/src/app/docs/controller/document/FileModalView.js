@@ -88,6 +88,41 @@ angular.module('docs').controller('FileModalView', function ($uibModalInstance, 
   };
 
   /**
+   * Get file content as a string.
+   */
+  $scope.getFileContent = function () {
+    console.log("haha");
+    return Restangular.one('file/' + $stateParams.fileId + '/data').get({ size: 'content' }).then(function (data) {
+      return data; // data 是纯文本内容
+    });
+  };
+
+  $scope.summaryFileContent = function () {
+    console.log("haha");
+    $scope.getFileContent().then(function(content) {
+      // console.log(content);
+
+      // 调用 DeepSeek API
+      Restangular.all('ai/chat').post(JSON.stringify({
+        model: 'deepseek-chat',
+        messages: [
+          { role: 'system', content: 'You are a helpful assistant to summary content in a file.' },
+          { role: 'user', content: "请你只写一段话，简单介绍这个文档的主要内容。" },
+          { role: 'user', content: content }
+        ],
+        stream: false
+      }),
+      null,
+      { 'Content-Type': 'application/json' },
+      ).then(function(response) {
+        $scope.summary = response.choices[0].message.content;
+      }, function() {
+        $scope.summary = 'AI接口请求失败，请重试';
+      });
+    });
+  }
+
+  /**
    * Print the file.
    */
   $scope.printFile = function () {

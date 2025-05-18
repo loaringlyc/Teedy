@@ -31,6 +31,12 @@
     <button type="button" class="btn btn-default" uib-tooltip="Show text content" tooltip-append-to-body="true" ng-click="openFileContent()">
       <span class="fas fa-eye"></span>
     </button>
+    <button type="button" class="btn btn-default" uib-tooltip="Summary content" tooltip-append-to-body="true" ng-click="summaryFileContent()">
+      <span class="fas fa-robot"></span>
+    </button>
+  </div>
+  <div ng-if="summary" class="alert alert-info">
+    <b>AI摘要：</b>{{ summary }}
   </div>
 </div>
 
