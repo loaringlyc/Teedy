@@ -91,14 +91,12 @@ angular.module('docs').controller('FileModalView', function ($uibModalInstance, 
    * Get file content as a string.
    */
   $scope.getFileContent = function () {
-    console.log("haha");
     return Restangular.one('file/' + $stateParams.fileId + '/data').get({ size: 'content' }).then(function (data) {
       return data; // data 是纯文本内容
     });
   };
 
   $scope.summaryFileContent = function () {
-    console.log("haha");
     $scope.getFileContent().then(function(content) {
       // console.log(content);
 

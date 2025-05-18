@@ -16,6 +16,12 @@
   <dd ng-if="document.coverage">{{ document.coverage }}</dd>
   <dt ng-if="document.rights">{{ 'document.rights' | translate }}</dt>
   <dd ng-if="document.rights">{{ document.rights }}</dd>
+  <dt>{{ '建议标签' }}</dt>
+  <dd>
+    <span class="label label-info" style="margin-right:5px;">
+      {{ suggestedTag }}
+    </span>
+  </dd>
   <dt>{{ 'document.contributors' | translate }}</dt>
   <dd>
     <span ng-repeat="contributor in document.contributors">

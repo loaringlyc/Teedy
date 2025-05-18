@@ -7,6 +7,47 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
   $scope.displayMode = _.isUndefined(localStorage.fileDisplayMode) ? 'grid' : localStorage.fileDisplayMode;
   $scope.openedFile = undefined;
 
+  Restangular.one('document', $stateParams.id).get().then(function (data) {
+    $scope.document = data;
+    $scope.description = $scope.document.description;
+    console.log($scope.description);
+    $scope.sendMessage();
+  }, function (response) {
+    $scope.error = response;
+  });
+
+  // $scope.loadTags = function() {
+  //   Restangular.one('tag/list').get().then(function(data) {
+  //     $scope.tags = data.tags;
+  //     console.log($scope.tags);
+  //   });
+  // };
+  // $scope.loadTags();
+
+  $scope.sendMessage = function() {
+    // 调用 DeepSeek API
+    Restangular.all('ai/chat').post(JSON.stringify({
+      model: 'deepseek-chat',
+      messages: [
+        { role: 'system', content: 'You are a helpful assistant to suggest possible tag for a document.' },
+        { role: 'user', content: 'Please return only word representing the name of the tag.' },
+        { role: 'user', content: 'Please ignore all HTML tags and styles in the following content. Only focus on the text information.' },
+        { role: 'user', content: 'The Description of the document is: ' + $scope.description || '' }
+      ],
+      stream: false
+    }),
+    null,
+    { 'Content-Type': 'application/json' },
+    ).then(function(response) {
+      var aiReply = response.choices[0].message.content;
+      $scope.suggestedTag = aiReply;
+    }, function() {
+      $scope.suggestedTag = "请重试";
+    });
+
+    $scope.input = '';
+  };
+
   /**
    * Watch for display mode change.
    */
